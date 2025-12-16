@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="logo">Admin Dashboard</div>
+    <div class="nav-links">
+        <a href="#" onclick="showSection('tenants')">Tenants</a>
+        <a href="#" onclick="showSection('payments')">Payments</a>
+        <a href="#" onclick="showSection('maintenance')">Maintenance</a>
+        <a href="#" onclick="showSection('vacate')">Vacate Requests</a>
+        <a href="/logout" class="btn-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="dashboard-content">
+
+    <!-- Tenants Section -->
+    <div id="tenants" class="section active">
+        <div class="header-actions">
+            <h2>Tenant Management</h2>
+            <button class="btn-primary" onclick="toggleModal('addTenantModal')">Add New Tenant</button>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Room</th>
+                        <th>Phone</th>
+                        <th>Join Date</th>
+                        <th>Deposit</th>
+                    </tr>
+                </thead>
+                <tbody id="tenantTableBody">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Payments Section -->
+    <div id="payments" class="section">
+        <h2>Payment History</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Tenant</th>
+                        <th>Room</th>
+                        <th>Amount</th>
+                        <th>Proof</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentTableBody">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Maintenance Section -->
+    <div id="maintenance" class="section">
+        <h2>Maintenance Requests</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Tenant</th>
+                        <th>Room</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="maintenanceTableBodyAdmin">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Vacate Section -->
+    <div id="vacate" class="section">
+        <h2>Vacate Requests</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Tenant</th>
+                        <th>Reason</th>
+                        <th>Dues</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="vacateTableBodyAdmin">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add Tenant Modal -->
+<div id="addTenantModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="toggleModal('addTenantModal')">&times;</span>
+        <h3>Add New Tenant</h3>
+        <form id="addTenantForm">
+            <input type="text" name="user_id" placeholder="User ID (Login Username)" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email">
+            <input type="text" name="phone" placeholder="Phone" required>
+            <select name="room_id" id="roomSelect" required>
+                <option value="">Select Room</option>
+                <!-- Populated by JS -->
+            </select>
+            <input type="number" name="deposit" placeholder="Deposit Amount" required>
+            <button type="submit" class="btn-primary">Add Tenant</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initial Load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTenants();
+        loadRoomsForSelect();
+    });
+</script>
+{% endblock %}

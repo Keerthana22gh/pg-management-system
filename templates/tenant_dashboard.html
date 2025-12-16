@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="logo">Tenant Dashboard</div>
+    <div class="nav-links">
+        <a href="#" onclick="showSection('profile')">My Room</a>
+        <a href="#" onclick="showSection('payments')">Payments</a>
+        <a href="#" onclick="showSection('maintenance')">Maintenance</a>
+        <a href="#" onclick="showSection('vacate')">Vacate</a>
+        <a href="/logout" class="btn-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="dashboard-content">
+
+    <!-- Profile Section -->
+    <div id="profile" class="section active">
+        <h2>My Room Details</h2>
+        <div class="card" id="profileCard">
+            <!-- Populated by JS -->
+            <p>Loading profile...</p>
+        </div>
+    </div>
+
+    <!-- Payments Section -->
+    <div id="payments" class="section">
+        <h2>Rent Payments</h2>
+        <div class="card">
+            <h3>Upload Payment Proof</h3>
+            <form id="uploadPaymentForm">
+                <input type="month" name="month" required>
+                <input type="number" name="amount" placeholder="Amount Paid" required>
+                <input type="file" name="proof" accept="image/*,application/pdf" required>
+                <button type="submit" class="btn-primary">Submit Proof</button>
+            </form>
+        </div>
+        <div class="table-container">
+            <h3>Payment History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tenantPaymentTableBody">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Maintenance Section -->
+    <div id="maintenance" class="section">
+        <h2>Maintenance</h2>
+        <div class="card">
+            <h3>New Request</h3>
+            <form id="maintenanceForm">
+                <input type="text" name="title" placeholder="Issue Title" required>
+                <textarea name="description" placeholder="Description" required></textarea>
+                <button type="submit" class="btn-primary">Submit Request</button>
+            </form>
+        </div>
+        <div class="table-container">
+            <h3>My Requests</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tenantMaintenanceTableBody">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Vacate Section -->
+    <div id="vacate" class="section">
+        <h2>Vacate Request</h2>
+        <div class="card" id="vacateFormContainer">
+            <h3>Submit Vacate Request</h3>
+            <form id="vacateForm">
+                <label>Vacate Date:</label>
+                <input type="date" name="vacate_date" required>
+                <textarea name="reason" placeholder="Reason for leaving" required></textarea>
+                <button type="submit" class="btn-danger">Submit Request</button>
+            </form>
+        </div>
+        <div id="existingVacateRequest" style="display:none;">
+            <div class="alert info">You have a pending vacate request. Status: <b id="vacateStatus"></b></div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTenantProfile();
+        loadTenantPayments();
+        loadTenantMaintenance();
+        loadTenantVacateStatus();
+    });
+</script>
+{% endblock %}
