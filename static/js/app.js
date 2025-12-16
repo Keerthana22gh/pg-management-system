@@ -102,7 +102,7 @@ async function loadAdminPayments(month = '') {
                         <td>${p.tenants.name}</td>
                         <td>${p.tenants.rooms ? p.tenants.rooms.room_number : '-'}</td>
                         <td>${p.amount}</td>
-                        <td>${p.proof_url ? `<a href="${p.proof_url}" target="_blank">View</a>` : 'None'}</td>
+                        <td>${p.proof_url ? `<a href="${p.proof_url}" target="_blank" class="btn-primary" style="padding: 4px 10px; font-size: 0.8rem; text-decoration: none;">View</a>` : 'None'}</td>
                         <td>${p.status}</td>
                     </tr>
                 `).join('');

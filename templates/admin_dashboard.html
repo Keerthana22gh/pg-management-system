@@ -115,8 +115,10 @@
 <!-- Add Tenant Modal -->
 <div id="addTenantModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="toggleModal('addTenantModal')">&times;</span>
-        <h3>Add New Tenant</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin:0;">Add New Tenant</h3>
+            <span class="close" onclick="toggleModal('addTenantModal')">&times;</span>
+        </div>
         <form id="addTenantForm">
             <input type="text" name="user_id" placeholder="User ID (Login Username)" required>
             <input type="password" name="password" placeholder="Password" required>
