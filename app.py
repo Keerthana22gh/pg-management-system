@@ -167,8 +167,15 @@ def admin_rooms():
 @login_required(role='admin')
 def admin_payments():
     try:
-        # Fetch payments with tenant name
-        response = supabase.table('rent_payments').select('*, tenants(name, room_id, rooms(room_number))').order('month', desc=True).execute()
+        month = request.args.get('month')
+        # Start building the query
+        query = supabase.table('rent_payments').select('*, tenants(name, room_id, rooms(room_number))').order('month', desc=True)
+        
+        # Apply filter if month is provided
+        if month:
+            query = query.eq('month', month)
+            
+        response = query.execute()
         return jsonify(response.data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

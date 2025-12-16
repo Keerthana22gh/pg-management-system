@@ -83,21 +83,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('vacateTableBodyAdmin')) loadAdminVacate();
 });
 
-async function loadAdminPayments() {
+async function loadAdminPayments(month = '') {
     try {
-        const res = await fetch('/api/admin/payments');
+        let url = '/api/admin/payments';
+        if (month) {
+            url += `?month=${month}`;
+        }
+        const res = await fetch(url);
         const payments = await res.json();
         const tbody = document.getElementById('paymentTableBody');
-        tbody.innerHTML = payments.map(p => `
-            <tr>
-                <td>${p.month}</td>
-                <td>${p.tenants.name}</td>
-                <td>${p.tenants.rooms ? p.tenants.rooms.room_number : '-'}</td>
-                <td>${p.amount}</td>
-                <td>${p.proof_url ? `<a href="${p.proof_url}" target="_blank">View</a>` : 'None'}</td>
-                <td>${p.status}</td>
-            </tr>
-        `).join('');
+        if (tbody) {
+            if (payments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No payments found for this period</td></tr>';
+            } else {
+                tbody.innerHTML = payments.map(p => `
+                    <tr>
+                        <td>${p.month}</td>
+                        <td>${p.tenants.name}</td>
+                        <td>${p.tenants.rooms ? p.tenants.rooms.room_number : '-'}</td>
+                        <td>${p.amount}</td>
+                        <td>${p.proof_url ? `<a href="${p.proof_url}" target="_blank">View</a>` : 'None'}</td>
+                        <td>${p.status}</td>
+                    </tr>
+                `).join('');
+            }
+        }
     } catch (e) { console.error(e); }
 }
 
